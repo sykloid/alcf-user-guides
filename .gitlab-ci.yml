@@ -1,0 +1,23 @@
+stages:
+  - build
+
+build-docs:
+  stage: build
+  needs: []
+  tags:
+    - hermes
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+  before_script:
+    - echo "{\"auths\":{\"goharbor.alcf.anl.gov\":{\"username\":\"${REGISTRY_USERNAME}\",\"password\":\"${REGISTRY_PASSWORD}\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor
+      --dockerfile=Containerfile
+      --context=${CI_PROJECT_DIR}
+      --build-arg HTTP_PROXY=${HTTP_PROXY}
+      --build-arg HTTPS_PROXY=${HTTPS_PROXY}
+      --build-arg NO_PROXY=${NO_PROXY}
+      --destination=goharbor.alcf.anl.gov/c4/alcf-user-guides/docs:${CI_COMMIT_SHORT_SHA}
+      --destination=goharbor.alcf.anl.gov/c4/alcf-user-guides/docs:latest
