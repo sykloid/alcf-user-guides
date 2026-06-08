@@ -61,6 +61,30 @@ You are now connected to the cluster! You will be prompted periodically to redo 
 
     You have successfully connected and authenticated with the cluster, but are not authorized to run the command you are trying to run. Make sure you are a member of a valid tenant, and are accessing resources within that tenant.
 
+## Setting your Default Namespace
+
+By default, `kubectl` commands require you to specify your tenant namespace with `-n <tenant-namespace>` on every invocation. You can avoid this by setting the default namespace for your current context:
+
+```console
+$ kubectl config set-context --current --namespace=<tenant-namespace>
+Context "user@hermes" modified.
+```
+
+After this, all `kubectl` commands will target your tenant namespace automatically:
+
+```console
+$ kubectl get pods
+No resources found in <tenant-namespace> namespace.
+```
+
+You can always override the default by passing `-n <other-namespace>` explicitly, or reset it with:
+
+```console
+$ kubectl config set-context --current --namespace=default
+```
+
+For more information on managing kubeconfig files and contexts, see the [Kubernetes documentation on configuring access to multiple clusters](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/). All remaining examples in this documentation will assume that you have performed this step, and will omit namespaces (either via the `--namespace` flag, or the specification of a namespace in object manifests). Outputs of commands will reference the `default` namespace.
+
 ## Accessing your Tenant
 
 If you have gotten this far, it means that you are part of a tenant, and have an associated namespace (the name of which should have been communicated to you as part of tenant creation).
@@ -68,8 +92,8 @@ If you have gotten this far, it means that you are part of a tenant, and have an
 You can verify this state as follows:
 
 ```console
-$ kubectl get all -n <tenant-namespace>
-No resources found in <tenant-namespace> namespaces.
+$ kubectl get all
+No resources found in default namespace.
 ```
 
 ## Deploying to your Tenant
@@ -81,7 +105,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: nginx
-  namespace: <tenant-namespace>
 spec:
   containers:
     - name: nginx
@@ -91,9 +114,9 @@ spec:
 As you may have guessed, this file describes a _pod_ resource object, which runs a single instance of an `nginx` web server, as a container. You can apply this object to the cluster as follows:
 
 ```console
-$ kubectl apply -n <tenant-namespace> -f nginx.yml
+$ kubectl apply -f nginx.yml
 pod/nginx created
-$ kubectl get pod -n <tenant-namespace>
+$ kubectl get pod
 NAME                       READY   STATUS    RESTARTS   AGE
 nginx                      1/1     Running   0          12s
 ```
@@ -101,7 +124,7 @@ nginx                      1/1     Running   0          12s
 To access this server from your environment, you must port-forward to the pod:
 
 ```console
-$ kubectl port-forward -n <tenant-namespace> pod/nginx 8080:80
+$ kubectl port-forward pod/nginx 8080:80
 Forwarding from 127.0.0.1:8080 -> 80
 Forwarding from [::1]:8080 -> 80
 ```
