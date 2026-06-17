@@ -2,7 +2,7 @@
 
 !!! warning "Artemis is in Preview"
 
-    The Artemis platform is currently in preview with a single active cluster -- `hermes`.
+    The Artemis platform is currently in preview with a single active cluster -- [Hermes](clusters/hermes/index.md).
 
     While the tools and technologies used are expected to remain stable as the platform transitions to general availability, all aspects of this documentation are subject to change during this preview period.
 
