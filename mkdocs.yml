@@ -430,6 +430,7 @@ nav:
     - Clusters:
       - artemis/clusters/index.md
       - Hermes: artemis/clusters/hermes/index.md
+      - Nepenthes: artemis/clusters/nepenthes/index.md
 
   - Services:
     - services/index.md
