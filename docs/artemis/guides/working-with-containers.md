@@ -139,15 +139,7 @@ $ kubectl create secret docker-registry registry-credentials \
     --docker-password=<deploy-token>
 ```
 
-With the secret in place and referenced under `imagePullSecrets`, the cluster can pull the image when the workload is applied. If it cannot, the pod reports `ImagePullBackOff`; inspect the cause with:
-
-```console
-$ kubectl -n <namespace> events
-```
-
-!!! tip "Managing the credential as a secret"
-
-    The pull credential is an ordinary Kubernetes secret. To keep it out of your manifests and in sync with a source of truth, define it as an `ExternalSecret` rather than creating it by hand -- see [Secrets Management](secrets.md).
+With the secret in place and referenced under `imagePullSecrets`, the cluster can pull the image when the workload is applied. If it cannot, the pod reports `ImagePullBackOff`.
 
 ## Links, References, and Recommended Reading
 
