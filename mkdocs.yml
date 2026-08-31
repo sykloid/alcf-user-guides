@@ -427,6 +427,8 @@ nav:
   - Artemis Application Platform:
     - artemis/index.md
     - Getting Started: artemis/getting-started.md
+    - Guides:
+      - Working with Containers: artemis/guides/working-with-containers.md
     - Clusters:
       - artemis/clusters/index.md
       - Hermes: artemis/clusters/hermes/index.md
